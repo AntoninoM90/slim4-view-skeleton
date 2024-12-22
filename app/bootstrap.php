@@ -24,9 +24,13 @@ if (false) { // Should be set to true in production
 $settings = require __DIR__ . '/settings.php';
 $settings($containerBuilder);
 
+// Create Request object from globals
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
+
 // Set up dependencies
 $dependencies = require __DIR__ . '/dependencies.php';
-$dependencies($containerBuilder);
+$dependencies($containerBuilder, $request);
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
@@ -61,10 +65,6 @@ $logError = $settings->get('logError');
 
 /** @var bool $logErrorDetails */
 $logErrorDetails = $settings->get('logErrorDetails');
-
-// Create Request object from globals
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
 
 // Ger the response factory and create the error handler
 $responseFactory = $app->getResponseFactory();

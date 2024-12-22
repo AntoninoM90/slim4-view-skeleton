@@ -16,10 +16,18 @@ return function (ContainerBuilder $containerBuilder) {
                 'displayErrorDetails' => true, // Should be set to false in production
                 'logError' => false,
                 'logErrorDetails' => false,
+
+                // Logger
                 'logger' => [
                     'name' => 'slim-app',
                     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
                     'level' => Logger::DEBUG,
+                ],
+
+                // Twig
+                'twig' => [
+                    'templates' => __DIR__ . '/../resources/templates',
+                    'cache' => __DIR__ . '/../var/twig'
                 ],
             ]);
         }

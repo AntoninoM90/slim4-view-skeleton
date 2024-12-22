@@ -22,3 +22,7 @@ cache.properties
 # Composer
 composer.phar
 composer.lock
+
+# Twig
+/var/twig/*
+!/var/twig/README.md

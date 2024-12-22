@@ -8,7 +8,9 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Views\Twig;
 
 /**
  * Set dependencies of the application.
@@ -18,7 +20,8 @@ use Psr\Log\LoggerInterface;
  * @return void
  */
 return function (
-    ContainerBuilder $containerBuilder
+    ContainerBuilder $containerBuilder,
+    RequestInterface $request
 ) {
     $containerBuilder->addDefinitions([
         // Logger
@@ -41,6 +44,22 @@ return function (
 
             // Return the logger
             return $logger;
+        },
+
+        // Twig
+        Twig::class => function (
+            ContainerInterface $container
+        ) use($request): Twig {
+            /** @var SettingsInterface $settings */
+            $settings = $container->get(SettingsInterface::class);
+
+            /** @var array $twigSettings */
+            $twigSettings = $settings->get('twig');
+
+            return Twig::create(
+                $twigSettings['templates'], 
+                [ 'cache' => $twigSettings['cache'] ]
+            );
         },
     ]);
 };

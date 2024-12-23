@@ -11,6 +11,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
@@ -35,9 +36,13 @@ class TestCase extends PHPUnit_TestCase
         $settings = require __DIR__ . '/../app/settings.php';
         $settings($containerBuilder);
 
+        // Create Request object from globals
+        $serverRequestCreator = ServerRequestCreatorFactory::create();
+        $request = $serverRequestCreator->createServerRequestFromGlobals();
+
         // Set up dependencies
         $dependencies = require __DIR__ . '/../app/dependencies.php';
-        $dependencies($containerBuilder);
+        $dependencies($containerBuilder, $request);
 
         // Build PHP-DI Container instance
         $container = $containerBuilder->build();

@@ -32,7 +32,7 @@
         "php": "^8.2",
         "ext-json": "*",
         "monolog/monolog": "^3.9",
-        "php-di/php-di": "^7.0",
+        "php-di/php-di": "^7.1",
         "slim/psr7": "^1.7",
         "slim/slim": "^4.14",
         "slim/twig-view": "^3.4"
